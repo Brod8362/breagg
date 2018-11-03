@@ -34,6 +34,7 @@ public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+
         Camera.Parameters params = camera.getParameters();
 
 
@@ -41,6 +42,7 @@ public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback
          * Change the orientation of the camera. This first block handles when it's in portrait mode,
          * the second block handles it in landscape.
          */
+
         if (this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
             params.set("orientation", "portrait");
             camera.setDisplayOrientation(90);
