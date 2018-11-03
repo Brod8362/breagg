@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Breagg</string>
     <string name="capture">Capture</string>
+    <string name="cam_count_text">Cameras:</string>
+    <string name="bread">Bread</string>
+    <string name="egg">Egg</string>
+    <string name="placeholder">()</string>
+    <string name="recapture">Recapture</string>
+    <string name="recapture_tooltip">Attempt to recapture the camera after leaving the app.</string>
+    <plurals name="percent_text">
+        <item quantity="one">(%d %)</item>
+    </plurals>
 </resources>

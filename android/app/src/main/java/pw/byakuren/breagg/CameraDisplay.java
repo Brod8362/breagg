@@ -5,8 +5,10 @@ import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback{
 
@@ -36,7 +38,6 @@ public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder) {
 
         Camera.Parameters params = camera.getParameters();
-
 
         /*
          * Change the orientation of the camera. This first block handles when it's in portrait mode,
