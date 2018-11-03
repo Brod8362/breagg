@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
          */
         cam = Camera.open();
         display = new CameraDisplay(this, cam);
-
+        layout.addView(display);
 
     }
 
