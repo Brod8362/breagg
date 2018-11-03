@@ -23,7 +23,7 @@ public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback
 
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
+    public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
 
@@ -33,7 +33,7 @@ public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public void surfaceCreated(SurfaceHolder holder) {
 
         Camera.Parameters params = camera.getParameters();
 
