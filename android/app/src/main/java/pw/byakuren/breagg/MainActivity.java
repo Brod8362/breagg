@@ -175,15 +175,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ArrayList<NNOutput> array = imgclass.classifyFrame(bitmp);
-        /*
-        for (NNOutput obj: array) {
-            if (obj.getName() == "bread") {
-                setBreadMulti((int) Math.round(obj.getValue()*100));
-            } else {
-                setEggMulti((int) Math.round(obj.getValue()*100));
-            }
-        }
-        */
+        
         NNOutput egg = array.get(0);
         NNOutput bread = array.get(1);
         setBreadMulti((int) Math.round(bread.getValue()*100));
