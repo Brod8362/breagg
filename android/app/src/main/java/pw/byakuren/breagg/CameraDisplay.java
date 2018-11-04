@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback{
 
-
+    final int picres = 196;
     Camera camera;
     SurfaceHolder holder;
 
@@ -54,7 +54,9 @@ public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback
             camera.setDisplayOrientation(0);
             params.setRotation(0);
         }
-
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO); //enable continuous autofocus
+        params.setVideoStabilization(true); //enable video stabilization
+        params.setPreviewFrameRate(15);
         camera.setParameters(params);
 
         try {

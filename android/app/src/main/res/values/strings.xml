@@ -10,4 +10,5 @@
     <plurals name="percent_text">
         <item quantity="one">(%d %)</item>
     </plurals>
+    <string name="focus">Focus</string>
 </resources>

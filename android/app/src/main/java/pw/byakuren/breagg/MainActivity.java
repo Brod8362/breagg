@@ -1,5 +1,6 @@
 package pw.byakuren.breagg;
 
+import android.content.Context;
 import android.hardware.Camera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -80,11 +81,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        /*
+        Toast.makeText(this, "Pausing camera", Toast.LENGTH_SHORT).show();
+        cam.stopPreview();
+        cam.release();
+        */
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /*
+        Toast.makeText(this, "Resuming camera", Toast.LENGTH_SHORT).show();
+        cam = Camera.open();
+        cam.startPreview();
+        */
+
+    }
+
+
     public void recaptureCamera(View v) {
 
         Toast.makeText(this, "Trying to recapture the camera.", Toast.LENGTH_SHORT).show();
         cam = Camera.open();
         cam.startPreview();
+
+    }
+
+    public void focusCamera(View v) {
+        cam.autoFocus(null);
 
     }
 
