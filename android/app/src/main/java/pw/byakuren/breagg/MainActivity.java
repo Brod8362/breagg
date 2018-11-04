@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             bitmp = (Bitmap) extra.get("data");
         }
-
+            process(null);
         }
 
 
