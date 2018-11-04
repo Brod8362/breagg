@@ -2,6 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+    aaptOptions {
+        noCompress "txt"
+        noCompress "tflite"
+        noCompress "lite"
+    }
+
     defaultConfig {
         applicationId "pw.byakuren.breagg"
         minSdkVersion 24
@@ -36,5 +42,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compile 'org.tensorflow:tensorflow-lite:+'
-
+    compile 'com.android.support:support-v13:+' //v13
 }

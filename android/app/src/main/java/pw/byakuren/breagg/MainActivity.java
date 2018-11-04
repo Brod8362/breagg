@@ -1,9 +1,14 @@
 package pw.byakuren.breagg;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -11,13 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "breagg";
     Camera cam;
     FrameLayout layout;
     CameraDisplay display;
-
+    Bitmap bitmp = null;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -62,19 +71,19 @@ public class MainActivity extends AppCompatActivity {
          * the tensorflow output.
          */
 
-        double eggVal = 0.34;
-        double breadVal = 0.16;
+
+        setBreadMulti(0);
+        setEggMulti(0);
+
 
         /*
          * Set values of progress bars and percentage indicators.
          */
 
 
-        eggBar.setProgress((int) Math.round(eggVal*100),true);
-        breadBar.setProgress((int) Math.round(breadVal*100), true);
-        //TODO replace this with a proper string placeholder
-        eggPercent.setText("("+(int)Math.round(eggVal*100) +"%)");
-        breadPercent.setText("("+(int)Math.round(breadVal*100) +"%)");
+
+
+
 
 
     }
@@ -110,11 +119,101 @@ public class MainActivity extends AppCompatActivity {
         cam.autoFocus(null);
     }
 
+    public void shutter(View view) {
+        dispatchTakePictureIntent();
 
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
+    }
+
+    public void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Bundle extra = data.getExtras();
+        if (extra == null) {
+            Toast.makeText(this, "no data in intent", Toast.LENGTH_SHORT).show();
+        } else {
+            bitmp = (Bitmap) extra.get("data");
+        }
+
+        }
+
+
+    public void debug(View v) {
+        if (bitmp == null) {
+            Toast.makeText(this, "Bitmap is null", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Bitmap exists", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void process(View v) {
+        if (bitmp == null) {
+            Toast.makeText(this, "no bitmap", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Toast.makeText(this, Integer.toString(bitmp.getByteCount()), Toast.LENGTH_SHORT).show();
+
+        ImageClassifier imgclass = null;
+        try {
+            imgclass = new ImageClassifier(this);
+        } catch (IOException e) {
+            Toast.makeText(this, "failed to make classifier", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        if (imgclass == null) {
+            Toast.makeText(this, "classifier is null!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ArrayList<NNOutput> array = imgclass.classifyFrame(bitmp);
+        /*
+        for (NNOutput obj: array) {
+            if (obj.getName() == "bread") {
+                setBreadMulti((int) Math.round(obj.getValue()*100));
+            } else {
+                setEggMulti((int) Math.round(obj.getValue()*100));
+            }
+        }
+        */
+        NNOutput egg = array.get(0);
+        NNOutput bread = array.get(1);
+        setBreadMulti((int) Math.round(bread.getValue()*100));
+        setEggMulti((int) Math.round(egg.getValue()*100));
+
+        TextView output = findViewById(R.id.output);
+        output.setText(array.get(0).toString()+"\n"+array.get(1).toString());
+    }
+
+    private void setEggMulti(int n) {
+        ProgressBar eggBar = findViewById(R.id.eggBar);
+        TextView eggPercent = findViewById(R.id.eggPercent);
+        eggBar.setProgress(n,true);
+        eggPercent.setText("("+n+"%)");
+    }
+
+    private void setBreadMulti(int n) {
+        ProgressBar breadBar = findViewById(R.id.breadBar);
+        TextView breadPercent = findViewById(R.id.breadPercent);
+        breadBar.setProgress(n, true);
+        breadPercent.setText("("+n+"%)");
+    }
+
+
+        /**
+         * A native method that is implemented by the 'native-lib' native library,
+         * which is packaged with this application.
+         */
     public native String stringFromJNI();
-}
+
+
+    }
+

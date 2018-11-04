@@ -11,4 +11,7 @@
         <item quantity="one">(%d %)</item>
     </plurals>
     <string name="focus">Focus</string>
+    <string name="camera_error">error</string>
+    <string name="debug">Debug</string>
+    <string name="process">Process</string>
 </resources>
