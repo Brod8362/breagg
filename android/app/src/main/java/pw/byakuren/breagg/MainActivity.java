@@ -37,9 +37,7 @@ public class MainActivity extends AppCompatActivity {
          * it should be good enough for these needs.
          *
          */
-        cam = Camera.open();
-        display = new CameraDisplay(this, cam);
-        layout.addView(display);
+        recaptureCamera(null);
 
 
         // Show the number of available cameras.
@@ -84,37 +82,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        /*
         Toast.makeText(this, "Pausing camera", Toast.LENGTH_SHORT).show();
         cam.stopPreview();
         cam.release();
-        */
+        cam = null;
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        /*
-        Toast.makeText(this, "Resuming camera", Toast.LENGTH_SHORT).show();
-        cam = Camera.open();
-        cam.startPreview();
-        */
+        if (cam == null) {
+            recaptureCamera(null);
+        }
 
     }
 
 
     public void recaptureCamera(View v) {
-
-        Toast.makeText(this, "Trying to recapture the camera.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Capturing camera", Toast.LENGTH_SHORT).show();
         cam = Camera.open();
-        cam.startPreview();
-
+        display = new CameraDisplay(this, cam);
+        layout.addView(display);
     }
 
     public void focusCamera(View v) {
         cam.autoFocus(null);
-
     }
 
 

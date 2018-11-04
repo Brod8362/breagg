@@ -56,7 +56,7 @@ public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback
         }
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO); //enable continuous autofocus
         params.setVideoStabilization(true); //enable video stabilization
-        params.setPreviewFrameRate(15);
+        params.setPreviewFrameRate(60);
         camera.setParameters(params);
 
         try {
@@ -67,7 +67,5 @@ public class CameraDisplay extends SurfaceView implements SurfaceHolder.Callback
 
         //Begin previewing the camera feed.
         camera.startPreview();
-
-
     }
 }
